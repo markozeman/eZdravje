@@ -35,8 +35,17 @@ function generirajPodatke(stPacienta) {
 
   // TODO: Potrebno implementirati
   
-  var pacient = {};
-  var visine = {};
+  var sessionId = getSessionId();
+  
+  var id = [-1,-1,-1];
+  
+  
+  var pacient = {
+      ime: "",
+      priimek: "",
+      datum_rojstva: ""
+  };
+  var visine = [];
   var teze = [];
   var temperature = [];
   var krvni_tlak_zgornji = [];
@@ -55,6 +64,7 @@ function generirajPodatke(stPacienta) {
           ime: "Janez",
           priimek: "Novak",
           datum_rojstva: "1. 9. 2015", 
+          ehrID: id[0],
           visina: visine,
           teza: teze,
           temperatura: temperature,
@@ -76,6 +86,7 @@ function generirajPodatke(stPacienta) {
           ime: "Ana",
           priimek: "Horvat",
           datum_rojstva: "25. 7. 2015",
+          ehrID: id[1],
           visina: visine,
           teza: teze,
           temperatura: temperature,
@@ -97,6 +108,7 @@ function generirajPodatke(stPacienta) {
           ime: "Luka",
           priimek: "Zupančič",
           datum_rojstva: "7. 3. 2016",
+          ehrID: id[2],
           visina: visine,
           teza: teze,
           temperatura: temperature,
@@ -106,9 +118,74 @@ function generirajPodatke(stPacienta) {
       };
   }
   
-
-  return ehrId;
+  
+  $.ajaxSetup({
+	headers: {"Ehr-Session": sessionId}
+	});
+	$.ajax({
+	    url: baseUrl + "/ehr",
+	    type: 'POST',
+	    success: function (data) {
+	        var ehrId = data.ehrId;
+	        var partyData = {
+	            firstNames: pacient.ime,
+	            lastNames: pacient.priimek,
+	            dateOfBirth: pacient.datumRojstva,
+	            
+	            
+	            
+	            partyAdditionalInfo: [{key: "ehrId", value: ehrId}]
+	        };
+	        $.ajax({
+	            url: baseUrl + "/demographics/party",
+	            type: 'POST',
+	            contentType: 'application/json',
+	            data: JSON.stringify(partyData),
+	            success: function (party) {
+	                if (party.action == 'CREATE') {
+	                    /*
+	                    $("#kreirajSporocilo").html("<span class='obvestilo " +
+                      "label label-success fade-in'>Uspešno kreiran EHR '" +
+                      ehrId + "'.</span>");
+                      */
+                      if (stPacienta == 1) {
+                        $("#kreirajSporocilo1").text(ehrId);
+                      }
+                      else if (stPacienta == 2) {
+                        $("#kreirajSporocilo2").text(ehrId);
+                      }
+                      else {
+                        $("#kreirajSporocilo3").text(ehrId);
+                      }
+                      
+                      id[stPacienta-1] = ehrId;
+	                }
+	            },
+	            error: function(err) {
+	            	$("#kreirajSporocilo").html("<span class='obvestilo label " +
+                "label-danger fade-in'>Napaka '" +
+                JSON.parse(err.responseText).userMessage + "'!");
+	            }
+	        });
+	    }
+	});
+  
+  return id[stPacienta-1];
 }
 
 
+var EHR = [];
+
+function generirajTriPaciente(stPacienta) {
+    EHR[0] = generirajPodatke(1);
+    EHR[1] = generirajPodatke(2);
+    EHR[2] = generirajPodatke(3);
+}
+
+
+
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
+
+
+
+

@@ -41,7 +41,7 @@
         <ul class="nav navbar-nav">
           <li><a href="opis.html">Opis ideje</a></li>
           <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#">Generiranje podatkov</a></li>
+          <li><a href="#" onclick='generirajTriPaciente()'>Generiranje podatkov</a></li>
         </ul>
       </div>
     </div>
@@ -52,31 +52,35 @@
   <!-- ZAČETEK: Vsebina aplikacije -->
   <div class="container">
     <div class="row">
-      <div class="col-lg-12 text-center">
+      <div class="col-lg-6 text-center">
         <!--<p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p> -->
         
         <table style="width:100%">
           <tr>
-            <td style="width:17%"> 
+            <td style="width:40%"> 
               <p align="left" class="font"> <font size="4"> <strong> Generirani podatki: </strong> </font> </p>
             </td>
-            <td style="width:10%">
+            <td style="width:60%">
               <select align="left" class="form-control input-mini">
-                <option value="1"> 1 </option>
-                <option value="2"> 2 </option>
-                <option value="3"> 3 </option>
+                <option id="kreirajSporocilo1" value="0"> 1 </option>
+                <option id="kreirajSporocilo2" value="1"> 2 </option>
+                <option id="kreirajSporocilo3" value="2"> 3 </option>
               </select>
             </td>
+            <!--
             <td style="width:73%">
-              <p align="left" class="font padding" id="ehrID_izbranega"> EhrID prvega pacienta je ..., EhrID drugega pacienta je ..., EhrID tretjega pacienta je ... </p>
+              <p align="left" class="font padding" id="ehrID_izbranega"> EhrID 1: <span id="kreirajSporocilo5"> </span> </p>
+              <p align="left" class="font padding" id="ehrID_izbranega"> EhrID 2: <span id="kreirajSporocilo2"> </span> </p> 
+              <p align="left" class="font padding" id="ehrID_izbranega"> EhrID 3: <span id="kreirajSporocilo3"> </span> </p>
             </td>
+            -->
           </tr>
           
           <tr>
             <td style="width:17%"> 
               <p align="left" class="font"> <font size="4"> <strong> Ročni vnos EhrID: </strong> </font> </p>
             </td>
-            <td style="width:10%">
+            <td style="width:40%">
               <input id="ehr_ID" type="text" class="form-control input-mini" placeholder="Vpiši EhrID">
             </td>
           </tr>
