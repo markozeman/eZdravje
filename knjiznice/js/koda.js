@@ -6,6 +6,7 @@ var username = "ois.seminar";
 var password = "ois4fri";
 
 
+
 /**
  * Prijava v sistem z privzetim uporabnikom za predmet OIS in pridobitev
  * enolične ID številke za dostop do funkcionalnosti
@@ -162,7 +163,7 @@ function generirajPodatke(stPacienta) {
 	                }
 	            },
 	            error: function(err) {
-	            	$("#kreirajSporocilo").html("<span class='obvestilo label " +
+	            	$("#kreirajSporocilo1").html("<span class='obvestilo label " +
                 "label-danger fade-in'>Napaka '" +
                 JSON.parse(err.responseText).userMessage + "'!");
 	            }
@@ -176,16 +177,34 @@ function generirajPodatke(stPacienta) {
 
 var EHR = [];
 
-function generirajTriPaciente(stPacienta) {
+function generirajTriPaciente() {
     EHR[0] = generirajPodatke(1);
     EHR[1] = generirajPodatke(2);
     EHR[2] = generirajPodatke(3);
 }
 
 
+$(document).ready(function() {
+    console.log( "ready!" );
+});
 
-// TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
+var gumb = document.getElementById("prikaz_podatkov");
+if (gumb) {
+  console.log("hhhh");
+  gumb.addEventListener('click', prikazi_obvestilo_o_napaki, false);
+}
 
+function prikazi_obvestilo_o_napaki() {
+  // if prestar/neuspesno
+  console.log("hhhh");
+  document.getElementById('opozorilo_o_napaki').style.display = "block";
+}
+
+
+function prikazi_podatke() {
+  
+  
+}
 
 
 
