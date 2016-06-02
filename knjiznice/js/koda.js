@@ -121,7 +121,7 @@ function generirajPodatke(stPacienta) {
   
   
   $.ajaxSetup({
-	headers: {"Ehr-Session": sessionId}
+	  headers: {"Ehr-Session": sessionId}
 	});
 	$.ajax({
 	    url: baseUrl + "/ehr",
@@ -176,35 +176,149 @@ function generirajPodatke(stPacienta) {
 
 
 var EHR = [];
+var zgenerirani_podatki = false;
 
 function generirajTriPaciente() {
     EHR[0] = generirajPodatke(1);
     EHR[1] = generirajPodatke(2);
     EHR[2] = generirajPodatke(3);
+    zgenerirani_podatki = true;
 }
+
+
+var napacen_pacient = false;
 
 
 $(document).ready(function() {
-    console.log( "ready!" );
+    var prikaz = document.getElementById("prikaz_podatkov");
+    if (prikaz) {
+      if (napacen_pacient) {
+        prikaz.addEventListener('click', prikazi_obvestilo_o_napaki, false);
+      }  
+      else {
+        prikaz.addEventListener('click', prikazi_podatke, false);
+      }
+      
+    }
+    
+    var meritev = document.getElementById("nova_meritev");
+    if (meritev) {
+      meritev.addEventListener('click', prikazi_polja_za_vnos, false);
+    }
+    
+    console.log(zgenerirani_podatki);
+    console.log($('#ehr_ID').empty());
+    ///////////////////////////////////////////////////////////////////////////////// zakaj ne dela?
+    if (!($('#ehr_ID').empty()) || zgenerirani_podatki) {
+      $('#prikaz_podatkov').prop('disabled', false);
+    }
+    /////////////////////////////////////////////////////////////////////////////////
+    
 });
 
-var gumb = document.getElementById("prikaz_podatkov");
-if (gumb) {
-  console.log("hhhh");
-  gumb.addEventListener('click', prikazi_obvestilo_o_napaki, false);
+
+
+function prikazi_obvestilo_o_napaki(e) {
+  $('#opozorilo_o_napaki').show(250);
 }
 
-function prikazi_obvestilo_o_napaki() {
-  // if prestar/neuspesno
-  console.log("hhhh");
-  document.getElementById('opozorilo_o_napaki').style.display = "block";
+function prikazi_podatke(e) {
+  $('#nova_meritev').show(500);
+  $('#row1').show(500);
+  $('#row2').show(500);
 }
 
 
-function prikazi_podatke() {
+function prikazi_polja_za_vnos(e) {
+  $('#vnosna_polja').toggle(500);
   
-  
+  if ($('#nova_meritev').text() == "Skrij podatke nove meritve") {
+    $('#nova_meritev').text("Vnesi podatke nove meritve");
+  }
+  else {
+    $('#nova_meritev').text("Skrij podatke nove meritve");
+  }
 }
+
+
+
+
+
+function dodajMeritve() {
+	var sessionId = getSessionId();
+  var ehrId = "";
+  
+  if (!($('#ehr_ID').empty())) {
+    ehrId = $("#dodajVitalnoEHR").val();  
+  }
+  else {
+    if ($('#select_id').val() == 0) {
+      ehrId = EHR[0];
+    }
+    else if ($('#select_id').val() == 1) {
+      ehrId = EHR[1];
+    }
+    else if ($('#select_id').val() == 2) {
+      ehrId = EHR[2];
+    }
+    
+  }
+  
+  console.log(ehrId);
+  
+	var datumInUra = $("#dodaj_datum_ura").val();
+	var telesnaVisina = $("#dodaj_visina").val();
+	var telesnaTeza = $("#dodaj_teza").val();
+	var telesnaTemperatura = $("#dodaj_temperatura").val();
+	var sistolicniKrvniTlak = $("#dodaj_sistolicni").val();
+	var diastolicniKrvniTlak = $("#dodaj_diastolicni").val();
+	var nasicenostKrviSKisikom = $("#dodaj_kisik").val();
+
+	if (!ehrId || ehrId.length == 0) {
+		$("#dodaj_meritve_sporocilo").html("<span class='obvestilo " +
+      "label label-warning fade-in'>Prosimo vnesite vse zahtevane podatke.</span>");
+	} else {
+		$.ajaxSetup({
+		    headers: {"Ehr-Session": sessionId}
+		});
+		var podatki = {
+			// Struktura predloge je na voljo na naslednjem spletnem naslovu:
+      // https://rest.ehrscape.com/rest/v1/template/Vital%20Signs/example
+		    "ctx/language": "en",
+		    "ctx/territory": "SI",
+		    "ctx/time": datumInUra,
+		    "vital_signs/height_length/any_event/body_height_length": telesnaVisina,
+		    "vital_signs/body_weight/any_event/body_weight": telesnaTeza,
+		   	"vital_signs/body_temperature/any_event/temperature|magnitude": telesnaTemperatura,
+		    "vital_signs/body_temperature/any_event/temperature|unit": "°C",
+		    "vital_signs/blood_pressure/any_event/systolic": sistolicniKrvniTlak,
+		    "vital_signs/blood_pressure/any_event/diastolic": diastolicniKrvniTlak,
+		    "vital_signs/indirect_oximetry:0/spo2|numerator": nasicenostKrviSKisikom
+		};
+		var parametriZahteve = {
+		    ehrId: ehrId,
+		    templateId: 'Vital Signs',
+		    format: 'FLAT',
+		};
+		$.ajax({
+		    url: baseUrl + "/composition?" + $.param(parametriZahteve),
+		    type: 'POST',
+		    contentType: 'application/json',
+		    data: JSON.stringify(podatki),
+		    success: function (res) {
+		        $("#dodaj_meritve_sporocilo").html(
+              "<span class='obvestilo label label-success fade-in'>" +
+              res.meta.href + ".</span>");
+		    },
+		    error: function(err) {
+		    	$("#dodaj_meritve_sporocilo").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+		    }
+		});
+	}
+}
+
 
 
 
