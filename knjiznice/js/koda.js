@@ -46,6 +46,7 @@ function generirajPodatke(stPacienta) {
       priimek: "",
       datum_rojstva: ""
   };
+  var casi_meritev = [];
   var visine = [];
   var teze = [];
   var temperature = [];
@@ -54,6 +55,7 @@ function generirajPodatke(stPacienta) {
   var kisik_v_krvi = [];
   
   if (stPacienta == 1) {
+      casi_meritev = ["2015-09-01T11:40Z", "2015-10-01T11:30Z", "2015-11-01T11:40Z", "2015-12-01T11:40Z", "2016-01-01T11:40Z", "2016-02-01T11:40Z", "2016-09-03T14:40Z", "2016-04-01T17:40Z", "2016-05-01T11:40Z", "2016-06-01T19:40Z"];
       visine = [50.0, 52.1, 54.5, 56.7, 59.9, 63.2, 65.6, 69.9, 71.3, 72.8];
       teze = [3100, 4250, 4999, 5775, 6240, 6969, 7555, 8324, 8846, 9119];
       temperature = [36.4, 36.8, 37.0, 35.9, 35,7, 36,2, 36.5, 36.5, 35.8, 36.0];
@@ -65,6 +67,7 @@ function generirajPodatke(stPacienta) {
           ime: "Janez",
           priimek: "Novak",
           datum_rojstva: "1. 9. 2015", 
+          datumi_meritev: casi_meritev,
           ehrID: id[0],
           visina: visine,
           teza: teze,
@@ -76,6 +79,7 @@ function generirajPodatke(stPacienta) {
   }
   
   else if (stPacienta == 2) {
+      casi_meritev = ["2015-07-25T11:00Z", "2015-08-25T10:40Z", "2015-09-25T11:40Z", "2015-10-25T17:37Z", "2015-11-25T15:40Z", "2015-12-25T17:40Z", "2016-01-25T11:21Z", "2016-02-25T13:30Z", "2016-03-25T12:50Z", "2016-04-25T11:40Z", "2016-05-25T11:22Z", ];
       visine = [48.3, 51.1, 53.5, 56.7, 59.9, 63.2, 65.6, 69.9, 71.3, 72.8, 75.1];
       teze = [2751, 3070, 3950, 4789, 5765, 6240, 6779, 7535, 8124, 8746, 9009];
       temperature = [36.3, 36.2, 37.0, 35.9, 35,8, 36,4, 36.3, 36.5, 36.0, 36,0, 36.2];
@@ -87,6 +91,7 @@ function generirajPodatke(stPacienta) {
           ime: "Ana",
           priimek: "Horvat",
           datum_rojstva: "25. 7. 2015",
+          datumi_meritev: casi_meritev,
           ehrID: id[1],
           visina: visine,
           teza: teze,
@@ -98,6 +103,7 @@ function generirajPodatke(stPacienta) {
   }
   
   else {
+      casi_meritev = ["2016-03-07T15:30Z", "2016-04-07T17:33Z", "2016-05-07T19:59Z"];
       visine = [51.0, 56.4, 63.0];
       teze = [3771, 4697, 5501];
       temperature = [36.0, 36.0, 36.7];
@@ -109,6 +115,7 @@ function generirajPodatke(stPacienta) {
           ime: "Luka",
           priimek: "Zupančič",
           datum_rojstva: "7. 3. 2016",
+          datumi_meritev: casi_meritev,
           ehrID: id[2],
           visina: visine,
           teza: teze,
@@ -226,6 +233,8 @@ function prikazi_podatke(e) {
   $('#nova_meritev').show(500);
   $('#row1').show(500);
   $('#row2').show(500);
+  $('#row3').show(500);
+  $('#ime_priimek_rd').show(500);
 }
 
 
