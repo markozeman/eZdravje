@@ -20,8 +20,8 @@
     }
     #ime_priimek_rd {
       font-family: Palatino Linotype;
-      text-decoration-color: blue;
-      font-size: 250%;
+      font-size: 300%;
+      margin-top: 15px;
     }
     #opozorilo_o_napaki {
       margin-top: 20px;
@@ -45,11 +45,12 @@
       margin-top: 30px;
     }
     
+    
   </style>
   
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
-  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="canvasjs.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
   
   
@@ -91,9 +92,9 @@
             </td>
             <td style="width:60%">
               <select align="left" class="form-control input-mini" id="select_id">
-                <option id="kreirajSporocilo1" value="0"> 1 </option>
-                <option id="kreirajSporocilo2" value="1"> 2 </option>
-                <option id="kreirajSporocilo3" value="2"> 3 </option>
+                <option id="kreirajSporocilo1" value="74e70a6a-ef49-4beb-947d-7ca48352ca52">74e70a6a-ef49-4beb-947d-7ca48352ca52</option>
+                <option id="kreirajSporocilo2" value="c1fa6d3c-500a-4e8b-aed7-de8b0447b682">c1fa6d3c-500a-4e8b-aed7-de8b0447b682</option>
+                <option id="kreirajSporocilo3" value="67b7ee08-c0ec-4bf3-8d4d-432b2427b67d">67b7ee08-c0ec-4bf3-8d4d-432b2427b67d</option>
               </select>
             </td>
           </tr>
@@ -149,8 +150,8 @@
 							<div class="col-lg-8 col-md-8 col-sm-8"><b> Višina </b></div>
 						</div>
 					</div>
-					<div class="panel-body">
-						
+					<div class="panel-body" style="height: 430px;">
+						<div id="chartContainer" style="height: 400px; width: 100%;"> </div>
 				  </div>
 				</div>
 			</div>
@@ -161,8 +162,8 @@
 							<div class="col-lg-8 col-md-8 col-sm-8"><b>Telesna teža</b></div>
 						</div>
 					</div>
-					<div class="panel-body">
-						
+					<div class="panel-body" style="height: 430px;">
+						<div id="chartContainer2" style="height: 400px; width: 100%;"> </div>
 				  </div>
 				</div>
 			</div>
@@ -175,8 +176,8 @@
 							<div class="col-lg-8 col-md-8 col-sm-8"><b> Krvni tlak&#160 </b> (sistolični in diastolični) </div>
 						</div>
 					</div>
-					<div class="panel-body">
-					  
+					<div class="panel-body" style="height: 430px;">
+					  <div id="chartContainer3" style="height: 400px; width: 100%;"> </div>
 					</div>
 				</div>
 			</div>
@@ -187,8 +188,8 @@
 							<div class="col-lg-6 col-md-6 col-sm-6"><b>Nasičenost krvi s kisikom</b></div>
 						</div>
 					</div>
-					<div class="panel-body">
-						
+					<div class="panel-body" style="height: 430px;">
+						<div id="chartContainer4" style="height: 400px; width: 100%;"> </div>
 				  </div>
 				</div>
 			</div>
@@ -209,11 +210,11 @@
 			</div>
 		</div>
       
+      
   </div>
   <!-- KONEC: Vsebina aplikacije -->
   
   
-  <div class="linechart"></div>
 
 </body>
 </html>
