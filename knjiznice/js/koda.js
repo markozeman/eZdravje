@@ -216,14 +216,6 @@ $(document).ready(function() {
       meritev.addEventListener('click', prikazi_polja_za_vnos, false);
     }
     
-   
-    console.log($('#ehr_ID').empty());
-    ///////////////////////////////////////////////////////////////////////////////// zakaj ne dela?
-    if (!($('#ehr_ID').empty()) || zgenerirani_podatki) {
-      $('#prikaz_podatkov').prop('disabled', false);
-    }
-    /////////////////////////////////////////////////////////////////////////////////
-    
 });
 
 
@@ -240,10 +232,6 @@ function prikazi_podatke(e) {
   $('#row2').show(500);
   $('#row3').show(500);
   $('#ime_priimek_rd').show(500);
-  izrisi_graf("chartContainer");
-  izrisi_graf("chartContainer2");
-  izrisi_graf("chartContainer3");
-  izrisi_graf("chartContainer4");
 }
 
 
@@ -270,8 +258,6 @@ function dodajMeritve() {
   else {
     ehrId = $('#select_id').val();
   }
-  
-  console.log(ehrId);
   
 	var datumInUra = $("#dodaj_datum_ura").val();
 	var telesnaVisina = $("#dodaj_visina").val();
@@ -330,8 +316,6 @@ function dodajMeritve() {
 
 function dodajZacetneMeritve(ehrId, datumInUra, telesnaVisina, telesnaTeza, telesnaTemperatura, sistolicniKrvniTlak, diastolicniKrvniTlak, nasicenostKrviSKisikom) {
 	var sessionId = getSessionId();
-  
-  console.log(ehrId);
   
 	if (!ehrId || ehrId.length == 0) {
 		$("#dodaj_meritve_sporocilo").html("<span class='obvestilo " +
@@ -420,247 +404,185 @@ function preberiMeritveVitalnihZnakov() {
   
   if (!($('#ehr_ID').empty())) {
     ehrId = $("#ehr_ID").val();  
-    console.log("uidh");
   }
   else {
     ehrId = $('#select_id').val();
   }
+  
 	
 	$.ajax({
+	  async: false,
     url: baseUrl + "/view/" + ehrId + "/" + "height",
    type: 'GET',
    headers: {"Ehr-Session": sessionId},
    success: function(data_height) {
-     console.log(data_height);
+     //console.log(data_height);
+     
+     var data_xy = [];
+     var x = "";
+     var y = "";
+     var y_born = "";
+     var temp = "";
+     
+     var rojen = data_height[0].time;
+     
+     for (var i=0; i<data_height.length; i++) {
+       x = data_height[i].height;
+       y = preoblikuj_datum(data_height[i].time);
+       y_born = preoblikuj_datum(data_height[data_height.length-1].time);
+       y = date_difference(y, y_born);
+       
+       temp = x;
+       x = y;
+       y = temp;
+       
+       data_xy.push({x,y});
+     }
+     
+     izrisi_graf("chartContainer_height", data_xy, data_height[0].unit, rojen);
+     
    }
   })
   
   $.ajax({
+    async: false,
     url: baseUrl + "/view/" + ehrId + "/" + "weight",
    type: 'GET',
    headers: {"Ehr-Session": sessionId},
    success: function(data_weight) {
-     console.log(data_weight);
+     //console.log(data_weight);
+     
+     var data_xy = [];
+     var x = "";
+     var y = "";
+     var y_born = "";
+     var temp = "";
+     
+     for (var i=0; i<data_weight.length; i++) {
+       x = data_weight[i].weight;
+       y = preoblikuj_datum(data_weight[i].time);
+       y_born = preoblikuj_datum(data_weight[data_weight.length-1].time);
+       y = date_difference(y, y_born);
+       
+       temp = x;
+       x = y;
+       y = temp;
+       
+       data_xy.push({x,y});
+     }
+     
+     izrisi_graf("chartContainer_weight", data_xy, data_weight[0].unit);
    }
   })
   
   $.ajax({
+    async: false,
     url: baseUrl + "/view/" + ehrId + "/" + "blood_pressure",
    type: 'GET',
    headers: {"Ehr-Session": sessionId},
    success: function(data_blood_pressure) {
-     console.log(data_blood_pressure);
+     //console.log(data_blood_pressure);
+     
+     var data_xy_sis = [];
+     var data_xy_dia = [];
+     var x_sis = "";
+     var x_dia = "";
+     var x = "";
+     var y = "";
+     var y_born = "";
+     var temp = "";
+     
+     for (var i=0; i<data_blood_pressure.length; i++) {
+       x_sis = data_blood_pressure[i].systolic;
+       x_dia = data_blood_pressure[i].diastolic;
+       y = preoblikuj_datum(data_blood_pressure[i].time);
+       y_born = preoblikuj_datum(data_blood_pressure[data_blood_pressure.length-1].time);
+       y = date_difference(y, y_born);
+       x = x_sis;
+       
+       temp = x;
+       x = y;
+       y = temp;
+       
+       data_xy_sis.push({x,y});
+       
+       y = x_dia;
+       data_xy_dia.push({x,y});
+     }
+     
+     izrisi_graf_veccrtni("chartContainer_pressure", data_xy_sis, data_xy_dia, data_blood_pressure[0].unit);
    }
   })
   
   $.ajax({
+    async: false,
     url: baseUrl + "/view/" + ehrId + "/" + "spO2",
    type: 'GET',
    headers: {"Ehr-Session": sessionId},
    success: function(data_spO2) {
-     console.log(data_spO2);
+     //console.log(data_spO2);
+     
+     var data_xy = [];
+     var x = "";
+     var y = "";
+     var y_born = "";
+     var temp = "";
+     
+     for (var i=0; i<data_spO2.length; i++) {
+       x = data_spO2[i].spO2;
+       y = preoblikuj_datum(data_spO2[i].time);
+       y_born = preoblikuj_datum(data_spO2[data_spO2.length-1].time);
+       y = date_difference(y, y_born);
+       
+       temp = x;
+       x = y;
+       y = temp;
+       
+       data_xy.push({x,y});
+     }
+     
+     izrisi_graf("chartContainer_o2", data_xy, "%");
    }
   })
 	
-  /*
-	if (!ehrId || ehrId.trim().length == 0 || !tip || tip.trim().length == 0) {
-		$("#preberiMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo " +
-      "label label-warning fade-in'>Prosim vnesite zahtevan podatek!");
-	} else {
-		$.ajax({
-			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
-	    	type: 'GET',
-	    	headers: {"Ehr-Session": sessionId},
-	    	success: function (data) {
-				var party = data.party;
-				$("#rezultatMeritveVitalnihZnakov").html("<br/><span>Pridobivanje " +
-          "podatkov za <b>'" + tip + "'</b> bolnika <b>'" + party.firstNames +
-          " " + party.lastNames + "'</b>.</span><br/><br/>");
-				if (tip == "telesna temperatura") {
-					$.ajax({
-  					    url: baseUrl + "/view/" + ehrId + "/" + "body_temperature",
-					    type: 'GET',
-					    headers: {"Ehr-Session": sessionId},
-					    success: function (res) {
-					    	if (res.length > 0) {
-						    	var results = "<table class='table table-striped " +
-                    "table-hover'><tr><th>Datum in ura</th>" +
-                    "<th class='text-right'>Telesna temperatura</th></tr>";
-						        for (var i in res) {
-						            results += "<tr><td>" + res[i].time +
-                          "</td><td class='text-right'>" + res[i].temperature +
-                          " " + res[i].unit + "</td>";
-						        }
-						        results += "</table>";
-						        $("#rezultatMeritveVitalnihZnakov").append(results);
-					    	} else {
-					    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
-                    "<span class='obvestilo label label-warning fade-in'>" +
-                    "Ni podatkov!</span>");
-					    	}
-					    },
-					    error: function() {
-					    	$("#preberiMeritveVitalnihZnakovSporocilo").html(
-                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
-                  JSON.parse(err.responseText).userMessage + "'!");
-					    }
-					});
-				} else if (tip == "telesna teža") {
-					$.ajax({
-					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
-					    type: 'GET',
-					    headers: {"Ehr-Session": sessionId},
-					    success: function (res) {
-					    	if (res.length > 0) {
-						    	var results = "<table class='table table-striped " +
-                    "table-hover'><tr><th>Datum in ura</th>" +
-                    "<th class='text-right'>Telesna teža</th></tr>";
-						        for (var i in res) {
-						            results += "<tr><td>" + res[i].time +
-                          "</td><td class='text-right'>" + res[i].weight + " " 	+
-                          res[i].unit + "</td>";
-						        }
-						        results += "</table>";
-						        $("#rezultatMeritveVitalnihZnakov").append(results);
-					    	} else {
-					    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
-                    "<span class='obvestilo label label-warning fade-in'>" +
-                    "Ni podatkov!</span>");
-					    	}
-					    },
-					    error: function() {
-					    	$("#preberiMeritveVitalnihZnakovSporocilo").html(
-                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
-                  JSON.parse(err.responseText).userMessage + "'!");
-					    }
-					});
-				} else if (tip == "telesna temperatura AQL") {
-					var AQL =
-						"select " +
-    						"t/data[at0002]/events[at0003]/time/value as cas, " +
-    						"t/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude as temperatura_vrednost, " +
-    						"t/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/units as temperatura_enota " +
-						"from EHR e[e/ehr_id/value='" + ehrId + "'] " +
-						"contains OBSERVATION t[openEHR-EHR-OBSERVATION.body_temperature.v1] " +
-						"where t/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude<35 " +
-						"order by t/data[at0002]/events[at0003]/time/value desc " +
-						"limit 10";
-					$.ajax({
-					    url: baseUrl + "/query?" + $.param({"aql": AQL}),
-					    type: 'GET',
-					    headers: {"Ehr-Session": sessionId},
-					    success: function (res) {
-					    	var results = "<table class='table table-striped table-hover'>" +
-                  "<tr><th>Datum in ura</th><th class='text-right'>" +
-                  "Telesna temperatura</th></tr>";
-					    	if (res) {
-					    		var rows = res.resultSet;
-						        for (var i in rows) {
-						            results += "<tr><td>" + rows[i].cas +
-                          "</td><td class='text-right'>" +
-                          rows[i].temperatura_vrednost + " " 	+
-                          rows[i].temperatura_enota + "</td>";
-						        }
-						        results += "</table>";
-						        $("#rezultatMeritveVitalnihZnakov").append(results);
-					    	} else {
-					    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
-                    "<span class='obvestilo label label-warning fade-in'>" +
-                    "Ni podatkov!</span>");
-					    	}
-
-					    },
-					    error: function() {
-					    	$("#preberiMeritveVitalnihZnakovSporocilo").html(
-                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
-                  JSON.parse(err.responseText).userMessage + "'!");
-					    }
-					});
-				}
-	    	},
-	    	error: function(err) {
-	    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
-            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
-            JSON.parse(err.responseText).userMessage + "'!");
-	    	}
-		});
-	}
-	*/
 }
 
 
 
-
-
-
-//izrisi_graf();
-
-
-function izrisi_graf(id) {
+function izrisi_graf(id, podatki, enota, datum_rojstva) {
   
     var chart = new CanvasJS.Chart(document.getElementById(id),
     {
+      interactivityEnabled: true,
+      animationEnabled: true,
+      animationDuration: 1000,
+      
+      axisX:{
+       title: "days from birth",
+       titleFontSize: 15,
+      },
+      
+      axisY:{
+       title: enota,
+       titleFontSize: 20
+      },
+      
+      toolTip:{
+        enabled: true,     
+        content: "Day {x}:  {y} " + enota
+      },
+      
       data: [
       {        
-        type: "line",
-        dataPoints: [
-        { x: 10, y: 21 },
-        { x: 20, y: 25},
-        { x: 30, y: 20 },
-        { x: 40, y: 25 },
-        { x: 50, y: 27 },
-        { x: 60, y: 28 },
-        { x: 70, y: 28 },
-        { x: 80, y: 24 },
-        { x: 90, y: 26}
-      
-        ]
-      },
-        {        
-        type: "line",
-        dataPoints: [
-        { x: 10, y: 31 },
-        { x: 20, y: 35},
-        { x: 30, y: 30 },
-        { x: 40, y: 35 },
-        { x: 50, y: 35 },
-        { x: 60, y: 38 },
-        { x: 70, y: 38 },
-        { x: 80, y: 34 },
-        { x: 90, y: 44}
-      
-        ]
-      },
-        {        
-        type: "line",
-        dataPoints: [
-        { x: 10, y: 45 },
-        { x: 20, y: 50},
-        { x: 30, y: 40 },
-        { x: 40, y: 45 },
-        { x: 50, y: 45 },
-        { x: 60, y: 48 },
-        { x: 70, y: 43 },
-        { x: 80, y: 41 },
-        { x: 90, y: 28}
-      
-        ]
-      },
-        {        
-        type: "line",
-        dataPoints: [
-        { x: 10, y: 71 },
-        { x: 20, y: 55},
-        { x: 30, y: 50 },
-        { x: 40, y: 65 },
-        { x: 50, y: 95 },
-        { x: 60, y: 68 },
-        { x: 70, y: 28 },
-        { x: 80, y: 34 },
-        { x: 90, y: 14}
-      
-        ]
+        type: "splineArea",
+        markerColor: "grey",
+        markerBorderColor: "lightgreen",
+        lineThickness: 3,
+        fillOpacity: 0.25, 
+    
+        dataPoints: podatki
       }
+        
       ]
     });
     
@@ -669,7 +591,85 @@ function izrisi_graf(id) {
 }
 
 
+function izrisi_graf_veccrtni(id, podatki, podatki_2, enota) {
+  
+    var chart = new CanvasJS.Chart(document.getElementById(id),
+    {
+      interactivityEnabled: true,
+      animationEnabled: true,
+      animationDuration: 1000,
+      
+      axisX:{
+       title: "days from birth",
+       titleFontSize: 15,
+      },
+      
+      axisY:{
+       title: enota,
+       titleFontSize: 20
+      },
+      
+      toolTip:{
+        enabled: true,     
+        content: "Day {x}:  {y} " + enota
+      },
+      
+      legend: {
+       horizontalAlign: "center", // "center" , "right"
+       verticalAlign: "bottom",  // "top" , "bottom"
+       fontSize: 15,
+      },
+      
+      data: [
+      {        
+        showInLegend: true,
+        legendText: "systolic",
+        type: "splineArea",
+        markerColor: "black",
+        markerBorderColor: "lightgreen",
+        lineThickness: 3,
+        fillOpacity: 0.3, 
+    
+        dataPoints: podatki
+      },
+      
+      {        
+        type: "splineArea",
+        markerColor: "grey",
+        showInLegend: true,
+        legendText: "diastolic",
+        markerBorderColor: "lightgreen",
+        lineThickness: 3,
+        fillOpacity: 0.3, 
+        
+        dataPoints: podatki_2
+      }
+        
+      ]
+    });
+    
+    chart.render();
+  
+}
 
+
+function preoblikuj_datum(datum) {
+  datum = datum.replace("T", "-");
+  var date = datum.split("-");
+  var leto = date[0];
+  var mesec = date[1];
+  var dan = date[2];
+  
+  return (mesec+"/"+dan+"/"+leto);
+}
+
+
+function date_difference(date1, date2) {
+  var d1 = new Date(date1);
+  var d2 = new Date(date2);
+  var timeDiff = Math.abs(d1.getTime() - d2.getTime());
+  return Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+}
 
 
 

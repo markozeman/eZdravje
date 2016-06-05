@@ -44,8 +44,10 @@
     .odmik2 {
       margin-top: 30px;
     }
-    
-    
+    .canvasjs-chart-credit {
+      display: none;
+    }
+      
   </style>
   
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
@@ -92,9 +94,9 @@
             </td>
             <td style="width:60%">
               <select align="left" class="form-control input-mini" id="select_id">
-                <option id="kreirajSporocilo1" value="74e70a6a-ef49-4beb-947d-7ca48352ca52">74e70a6a-ef49-4beb-947d-7ca48352ca52</option>
-                <option id="kreirajSporocilo2" value="c1fa6d3c-500a-4e8b-aed7-de8b0447b682">c1fa6d3c-500a-4e8b-aed7-de8b0447b682</option>
-                <option id="kreirajSporocilo3" value="67b7ee08-c0ec-4bf3-8d4d-432b2427b67d">67b7ee08-c0ec-4bf3-8d4d-432b2427b67d</option>
+                <option id="kreirajSporocilo1" value="6688d3fd-a4b2-4d8a-9d7c-03fec7f0ddcd">6688d3fd-a4b2-4d8a-9d7c-03fec7f0ddcd</option>
+                <option id="kreirajSporocilo2" value="339a6bf4-f8c5-40c4-95e1-cbbfa429f876">339a6bf4-f8c5-40c4-95e1-cbbfa429f876</option>
+                <option id="kreirajSporocilo3" value="daa50bbb-205b-421d-b36e-3ae63bdef392">daa50bbb-205b-421d-b36e-3ae63bdef392</option>
               </select>
             </td>
           </tr>
@@ -151,7 +153,7 @@
 						</div>
 					</div>
 					<div class="panel-body" style="height: 430px;">
-						<div id="chartContainer" style="height: 400px; width: 100%;"> </div>
+						<div id="chartContainer_height" style="height: 400px; width: 100%;"> </div>
 				  </div>
 				</div>
 			</div>
@@ -163,7 +165,7 @@
 						</div>
 					</div>
 					<div class="panel-body" style="height: 430px;">
-						<div id="chartContainer2" style="height: 400px; width: 100%;"> </div>
+						<div id="chartContainer_weight" style="height: 400px; width: 100%;"> </div>
 				  </div>
 				</div>
 			</div>
@@ -177,7 +179,7 @@
 						</div>
 					</div>
 					<div class="panel-body" style="height: 430px;">
-					  <div id="chartContainer3" style="height: 400px; width: 100%;"> </div>
+					  <div id="chartContainer_pressure" style="height: 400px; width: 100%;"> </div>
 					</div>
 				</div>
 			</div>
@@ -189,7 +191,7 @@
 						</div>
 					</div>
 					<div class="panel-body" style="height: 430px;">
-						<div id="chartContainer4" style="height: 400px; width: 100%;"> </div>
+						<div id="chartContainer_o2" style="height: 400px; width: 100%;"> </div>
 				  </div>
 				</div>
 			</div>
