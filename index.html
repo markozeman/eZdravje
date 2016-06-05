@@ -18,20 +18,24 @@
     p.font {
       font-family: Palatino Linotype;
     }
-    #ime_priimek_rd {
-      font-family: Palatino Linotype;
-      font-size: 300%;
-      margin-top: 15px;
-    }
     #opozorilo_o_napaki {
       margin-top: 20px;
     }
     #nova_meritev {
       margin-top: 15px;
     }
-    #ime_priimek_rd {
+    #ime_priimek_rd_m {
+      font-family: Palatino Linotype;
+      font-size: 300%;
       margin-top: 15px;
+      color: blue;
     }
+    #ime_priimek_rd_f {
+      font-family: Palatino Linotype;
+      font-size: 300%;
+      margin-top: 15px;
+      color: magenta;
+    }    
     #row3 {
       margin-top: 30px;
     }
@@ -54,7 +58,8 @@
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="canvasjs.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
-  
+  <script type="text/javascript" src="require.js"></script>
+  <script type="text/javascript" src="r.js"></script>
   
 </head>
 <body>
@@ -94,9 +99,9 @@
             </td>
             <td style="width:60%">
               <select align="left" class="form-control input-mini" id="select_id">
-                <option id="kreirajSporocilo1" value="6688d3fd-a4b2-4d8a-9d7c-03fec7f0ddcd">6688d3fd-a4b2-4d8a-9d7c-03fec7f0ddcd</option>
-                <option id="kreirajSporocilo2" value="339a6bf4-f8c5-40c4-95e1-cbbfa429f876">339a6bf4-f8c5-40c4-95e1-cbbfa429f876</option>
-                <option id="kreirajSporocilo3" value="daa50bbb-205b-421d-b36e-3ae63bdef392">daa50bbb-205b-421d-b36e-3ae63bdef392</option>
+                <option id="kreirajSporocilo1" value="2b5e1a45-288c-46b7-b649-4587dd640f2a">2b5e1a45-288c-46b7-b649-4587dd640f2a</option>
+                <option id="kreirajSporocilo2" value="4a06e10f-2c36-479c-ae6c-6543e2c67851">4a06e10f-2c36-479c-ae6c-6543e2c67851</option>
+                <option id="kreirajSporocilo3" value="0f37fc34-f3e0-4cc2-979d-50fec90003ad">0f37fc34-f3e0-4cc2-979d-50fec90003ad</option>
               </select>
             </td>
           </tr>
@@ -120,7 +125,8 @@
           Ta aplikacija je namenjena za otroke do 10. leta starosti. Ker je izbran pacient starejši, njegovih podatkov ni mogoče prikazati.
         </div>
         
-        <p id="ime_priimek_rd" style="display:none;"> Ime Priimek (datum rojstva) </p>
+        <p id="ime_priimek_rd_m" style="display:none;"> </p>
+        <p id="ime_priimek_rd_f" style="display:none;"> </p>
         
         <button type="button" align="left" class="btn btn-success btn-md" id="nova_meritev" style="display:none;"> Vnesi podatke nove meritve </button>
         

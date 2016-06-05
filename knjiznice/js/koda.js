@@ -56,17 +56,18 @@ function generirajPodatke(stPacienta) {
   
   if (stPacienta == 1) {
       casi_meritev = ["2015-09-01T11:40Z", "2015-10-01T11:30Z", "2015-11-01T11:40Z", "2015-12-01T11:40Z", "2016-01-01T11:40Z", "2016-02-01T11:40Z", "2016-03-01T14:40Z", "2016-04-01T17:40Z", "2016-05-01T11:40Z", "2016-06-01T19:40Z"];
-      visine = [50.0, 52.1, 54.5, 56.7, 59.9, 63.2, 65.6, 69.9, 71.3, 72.8];
-      teze = [3.100, 4.250, 4.999, 5.775, 6.240, 6.969, 7.555, 8.324, 8.846, 9.119];
+      visine = [46.0, 48.1, 50.5, 52.7, 55.9, 59.2, 61.6, 65.9, 67.3, 68.8];
+      teze = [4.100, 5.550, 6.399, 7.375, 7.940, 8.769, 9.555, 10.324, 10.946, 11.519];
       temperature = [36.4, 36.8, 37.0, 35.9, 35,7, 36,2, 36.5, 36.5, 35.8, 36.0];
-      krvni_tlak_zgornji = [87, 101, 106, 106, 105, 106, 107, 108, 105, 104];
-      krvni_tlak_spodnji = [68, 65, 63, 63, 65, 66, 67, 67, 68, 69];
-      kisik_v_krvi = [99, 98, 98, 97, 98, 96, 95, 97, 96, 97];
+      krvni_tlak_zgornji = [97, 111, 116, 116, 115, 116, 114, 118, 115, 114];
+      krvni_tlak_spodnji = [73, 70, 68, 68, 70, 71, 72, 73, 73, 75];
+      kisik_v_krvi = [99, 96, 96, 95, 95, 94, 94, 92, 89, 90];
       
       pacient = {
           ime: "Janez",
           priimek: "Novak",
-          datum_rojstva: "1. 9. 2015", 
+          datum_rojstva: "2015-09-01T11:40:00.000Z",
+          spol: "MALE",
           datumi_meritev: casi_meritev,
           ehrID: id[0],
           visina: visine,
@@ -81,8 +82,8 @@ function generirajPodatke(stPacienta) {
   
   else if (stPacienta == 2) {
       casi_meritev = ["2015-07-25T11:00Z", "2015-08-25T10:40Z", "2015-09-25T11:40Z", "2015-10-25T17:37Z", "2015-11-25T15:40Z", "2015-12-25T17:40Z", "2016-01-25T11:21Z", "2016-02-25T13:30Z", "2016-03-25T12:50Z", "2016-04-25T11:40Z", "2016-05-25T11:22Z", ];
-      visine = [48.3, 51.1, 53.5, 56.7, 59.9, 63.2, 65.6, 69.9, 71.3, 72.8, 75.1];
-      teze = [2.751, 3.070, 3.950, 4.789, 5.765, 6.240, 6.779, 7.535, 8.124, 8.746, 9.009];
+      visine = [51.3, 54.1, 56.5, 59.7, 62.9, 66.2, 68.6, 72.9, 75.3, 77.8, 81.1];
+      teze = [2.351, 2.670, 3.550, 4.389, 5.365, 5.840, 6.379, 6.935, 7.524, 8.146, 8.709];
       temperature = [36.3, 36.2, 37.0, 35.9, 35,8, 36,4, 36.3, 36.5, 36.0, 36,0, 36.2];
       krvni_tlak_zgornji = [79, 99, 101, 104, 105, 106, 106, 107, 105, 104, 105];
       krvni_tlak_spodnji = [68, 65, 64, 63, 65, 66, 66, 67, 68, 67, 67];
@@ -91,8 +92,9 @@ function generirajPodatke(stPacienta) {
       pacient = {
           ime: "Ana",
           priimek: "Horvat",
-          datum_rojstva: "25. 7. 2015",
+          datum_rojstva: "2015-07-25T11:00:00.000Z",
           datumi_meritev: casi_meritev,
+          spol: "FEMALE",
           ehrID: id[1],
           visina: visine,
           teza: teze,
@@ -115,7 +117,8 @@ function generirajPodatke(stPacienta) {
       pacient = {
           ime: "Luka",
           priimek: "Zupančič",
-          datum_rojstva: "7. 3. 2016",
+          datum_rojstva: "2016-03-07T15:30:00.000Z",
+          spol: "MALE",
           datumi_meritev: casi_meritev,
           ehrID: id[2],
           visina: visine,
@@ -140,7 +143,8 @@ function generirajPodatke(stPacienta) {
 	        var partyData = {
 	            firstNames: pacient.ime,
 	            lastNames: pacient.priimek,
-	            dateOfBirth: pacient.datumRojstva,
+	            dateOfBirth: pacient.datum_rojstva,
+	            gender: pacient.spol,
 	            partyAdditionalInfo: [{key: "ehrId", value: ehrId}]
 	        };
 	        $.ajax({
@@ -231,7 +235,8 @@ function prikazi_podatke(e) {
   $('#row1').show(500);
   $('#row2').show(500);
   $('#row3').show(500);
-  $('#ime_priimek_rd').show(500);
+  $('#ime_priimek_rd_m').show(500);
+  $('#ime_priimek_rd_f').show(500);
 }
 
 
@@ -378,7 +383,7 @@ function preberiEHRodBolnika() {
   }
 
 	if (!ehrId || ehrId.trim().length == 0) {
-		$("#ime_priimek_rd").html("Prosim vnesite zahtevan podatek!");
+		$("#ime_priimek_rd_m").html("Prosim vnesite zahtevan podatek!");
 	} else {
 		$.ajax({
 			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
@@ -386,10 +391,17 @@ function preberiEHRodBolnika() {
 			headers: {"Ehr-Session": sessionId},
 	    	success: function (data) {
 				var party = data.party;
-				$("#ime_priimek_rd").text(party.firstNames +" "+ party.lastNames);
+				if (party.gender == "MALE") {
+				  $("#ime_priimek_rd_m").text(party.firstNames +" "+ party.lastNames +" (rojen " + preoblikuj_datum(party.dateOfBirth) +")");
+				  $("#ime_priimek_rd_f").text("");
+				}
+				else {
+				  $("#ime_priimek_rd_f").text(party.firstNames +" "+ party.lastNames +" (rojena " + preoblikuj_datum(party.dateOfBirth) +")");
+				  $("#ime_priimek_rd_m").text("");
+				}
 			},
 			error: function(err) {
-				$("#ime_priimek_rd").text("Prišlo je do napake pri branju podatkov pacienta.");
+				$("#ime_priimek_rd_m").text("Prišlo je do napake pri branju podatkov pacienta.");
 			}
 		});
 	}
@@ -409,6 +421,12 @@ function preberiMeritveVitalnihZnakov() {
     ehrId = $('#select_id').val();
   }
   
+  
+	var teza_dekleta = beri_datoteko('dekleta_teza.txt');
+	var teza_fantje = beri_datoteko('fantje_teza.txt');
+	var visina_dekleta = beri_datoteko('dekleta_visina.txt');
+	var visina_fantje = beri_datoteko('fantje_visina.txt');
+	
 	
 	$.ajax({
 	  async: false,
@@ -419,12 +437,14 @@ function preberiMeritveVitalnihZnakov() {
      //console.log(data_height);
      
      var data_xy = [];
+     var data_xy_av_m= [];
+     var data_xy_av_f= [];
      var x = "";
      var y = "";
      var y_born = "";
      var temp = "";
+     var tmp_x = "";
      
-     var rojen = data_height[0].time;
      
      for (var i=0; i<data_height.length; i++) {
        x = data_height[i].height;
@@ -437,9 +457,17 @@ function preberiMeritveVitalnihZnakov() {
        y = temp;
        
        data_xy.push({x,y});
+       
+       tmp_x = x;
+       
+       y = parseFloat(visina_fantje[tmp_x+1][1]);
+       data_xy_av_m.push({x,y});
+       
+       y = parseFloat(visina_dekleta[tmp_x+1][1]);
+       data_xy_av_f.push({x,y});
      }
      
-     izrisi_graf("chartContainer_height", data_xy, data_height[0].unit, rojen);
+     izrisi_graf_tricrtni("chartContainer_height", data_xy, data_xy_av_m, data_xy_av_f, data_height[0].unit);
      
    }
   })
@@ -453,10 +481,13 @@ function preberiMeritveVitalnihZnakov() {
      //console.log(data_weight);
      
      var data_xy = [];
+     var data_xy_av_m= [];
+     var data_xy_av_f= [];
      var x = "";
      var y = "";
      var y_born = "";
      var temp = "";
+     var tmp_x = "";
      
      for (var i=0; i<data_weight.length; i++) {
        x = data_weight[i].weight;
@@ -469,9 +500,17 @@ function preberiMeritveVitalnihZnakov() {
        y = temp;
        
        data_xy.push({x,y});
+       
+       tmp_x = x;
+       
+       y = parseFloat(teza_fantje[tmp_x+1][1]);
+       data_xy_av_m.push({x,y});
+       
+       y = parseFloat(teza_dekleta[tmp_x+1][1]);
+       data_xy_av_f.push({x,y});
      }
      
-     izrisi_graf("chartContainer_weight", data_xy, data_weight[0].unit);
+     izrisi_graf_tricrtni("chartContainer_weight", data_xy, data_xy_av_m, data_xy_av_f, data_weight[0].unit);
    }
   })
   
@@ -510,7 +549,7 @@ function preberiMeritveVitalnihZnakov() {
        data_xy_dia.push({x,y});
      }
      
-     izrisi_graf_veccrtni("chartContainer_pressure", data_xy_sis, data_xy_dia, data_blood_pressure[0].unit);
+     izrisi_graf_dvocrtni("chartContainer_pressure", data_xy_sis, data_xy_dia, data_blood_pressure[0].unit);
    }
   })
   
@@ -549,7 +588,7 @@ function preberiMeritveVitalnihZnakov() {
 
 
 
-function izrisi_graf(id, podatki, enota, datum_rojstva) {
+function izrisi_graf(id, podatki, enota) {
   
     var chart = new CanvasJS.Chart(document.getElementById(id),
     {
@@ -569,7 +608,7 @@ function izrisi_graf(id, podatki, enota, datum_rojstva) {
       
       toolTip:{
         enabled: true,     
-        content: "Day {x}:  {y} " + enota
+        content: "{x}. dan:  {y} " + enota
       },
       
       data: [
@@ -591,7 +630,7 @@ function izrisi_graf(id, podatki, enota, datum_rojstva) {
 }
 
 
-function izrisi_graf_veccrtni(id, podatki, podatki_2, enota) {
+function izrisi_graf_dvocrtni(id, podatki, podatki_2, enota) {
   
     var chart = new CanvasJS.Chart(document.getElementById(id),
     {
@@ -611,22 +650,22 @@ function izrisi_graf_veccrtni(id, podatki, podatki_2, enota) {
       
       toolTip:{
         enabled: true,     
-        content: "Day {x}:  {y} " + enota
+        content: "{x}. dan:  {y} " + enota
       },
       
       legend: {
-       horizontalAlign: "center", // "center" , "right"
-       verticalAlign: "bottom",  // "top" , "bottom"
+       horizontalAlign: "center", 
+       verticalAlign: "bottom", 
        fontSize: 15,
       },
       
       data: [
-      {        
-        showInLegend: true,
-        legendText: "systolic",
+      {  
         type: "splineArea",
         markerColor: "black",
         markerBorderColor: "lightgreen",
+        showInLegend: true,
+        legendText: "systolic",
         lineThickness: 3,
         fillOpacity: 0.3, 
     
@@ -636,15 +675,106 @@ function izrisi_graf_veccrtni(id, podatki, podatki_2, enota) {
       {        
         type: "splineArea",
         markerColor: "grey",
+        markerBorderColor: "lightgreen",
         showInLegend: true,
         legendText: "diastolic",
-        markerBorderColor: "lightgreen",
         lineThickness: 3,
-        fillOpacity: 0.3, 
+        fillOpacity: 0.2, 
         
         dataPoints: podatki_2
       }
+      ]
+    });
+    
+    chart.render();
+  
+}
+
+
+function izrisi_graf_tricrtni(id, podatki, podatki_2, podatki_3, enota) {
+  
+    var chart = new CanvasJS.Chart(document.getElementById(id),
+    {
+      interactivityEnabled: true,
+      animationEnabled: true,
+      animationDuration: 1000,
+      
+      axisX:{
+       title: "days from birth",
+       titleFontSize: 15,
+      },
+      
+      axisY:{
+       title: enota,
+       titleFontSize: 20
+      },
+      
+      legend: {
+       horizontalAlign: "center", 
+       verticalAlign: "bottom", 
+       fontSize: 15,
+      },
+      
+      
+      toolTip: {
+        shared: true,
+        contentFormatter: function(e){
+          var str = "";
+          for (var i = 0; i < e.entries.length; i++){
+            var  temp = "";
+            if (i == 0) {
+              var dan = (e.entries[i].dataPoint.x)+1;
+              temp = dan + ". dan: " + e.entries[i].dataPoint.y +" "+ enota + "<br/>";
+            }
+            else if (i == 1) {
+              temp = "Povprečje za moške na ta dan: " + e.entries[i].dataPoint.y +" "+ enota + "<br/>";
+            }
+            else if (i == 2) {
+              temp = "Povprečje za ženske na ta dan: " + e.entries[i].dataPoint.y +" "+ enota + "<br/>";
+            }
+            str = str.concat(temp);
+          }
+          return str;
+        }
+      },
+      
+      data: [
+      {     
+        type: "splineArea",
+        markerColor: "black",
+        markerBorderColor: "lightgreen",
+        lineThickness: 3,
+        fillOpacity: 0.3, 
+        showInLegend: true,
+        legendText: "vaš otrok",
+    
+        dataPoints: podatki
+      },
+      
+      {     
+        type: "line",
+        markerColor: "blue",
+        markerBorderColor: "lightgreen",
+        lineThickness: 3,
+        fillOpacity: 0.2, 
+        showInLegend: true,
+        legendText: "moško povprečje",
         
+        dataPoints: podatki_2
+      },
+        
+      {        
+        type: "line",
+        markerColor: "magenta",
+        markerBorderColor: "lightgreen",
+        lineThickness: 3,
+        fillOpacity: 0.1, 
+        showInLegend: true,
+        legendText: "žensko povprečje",
+    
+        dataPoints: podatki_3
+      }
+      
       ]
     });
     
@@ -672,4 +802,20 @@ function date_difference(date1, date2) {
 }
 
 
+function beri_datoteko(filename) {
+  var vrstice = [];
+  $.get({
+    url: filename,
+    async: false,
+    success: function(vsebina) {
+      vrstice = vsebina.split('\n');
+      for(var i = 0; i<vrstice.length; i++) {
+        var vrstica = vrstice[i].split('\t');
+        vrstice[i] = [vrstica[0], vrstica[5]];
+      }
+    }
+  });
+  //console.log(vrstice);
+  return vrstice;
+}
 
