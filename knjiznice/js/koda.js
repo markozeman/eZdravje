@@ -234,7 +234,6 @@ function prikazi_podatke(e) {
   $('#nova_meritev').show(500);
   $('#row1').show(500);
   $('#row2').show(500);
-  $('#row3').show(500);
   $('#ime_priimek_rd_m').show(500);
   $('#ime_priimek_rd_f').show(500);
 }
